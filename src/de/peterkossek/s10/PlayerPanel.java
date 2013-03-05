@@ -20,6 +20,8 @@ public class PlayerPanel extends JPanel {
 	private JLabel lblPhaseDescription;
 	private JLabel lblPlayer;
 	private JLabel lblTask;
+	private JLabel lblPoints;
+	private JLabel lblPointsValue;
 	
 	/**
 	 * Create the panel.
@@ -81,11 +83,27 @@ public class PlayerPanel extends JPanel {
 		gbc_lblPhaseDescription.gridx = 1;
 		gbc_lblPhaseDescription.gridy = 2;
 		add(lblPhaseDescription, gbc_lblPhaseDescription);
+		
+		lblPoints = new JLabel("Punkte:");
+		GridBagConstraints gbc_lblPoints = new GridBagConstraints();
+		gbc_lblPoints.anchor = GridBagConstraints.WEST;
+		gbc_lblPoints.insets = new Insets(0, 0, 0, 5);
+		gbc_lblPoints.gridx = 0;
+		gbc_lblPoints.gridy = 3;
+		add(lblPoints, gbc_lblPoints);
+		
+		lblPointsValue = new JLabel(String.valueOf(player.getPoints()));
+		GridBagConstraints gbc_lblPointsValue = new GridBagConstraints();
+		gbc_lblPointsValue.anchor = GridBagConstraints.WEST;
+		gbc_lblPointsValue.gridx = 1;
+		gbc_lblPointsValue.gridy = 3;
+		add(lblPointsValue, gbc_lblPointsValue);
 	}
 	
-	public void updateInfo() {
+	public void updatePlayerInfo() {
 		lblPlayerName.setText(player.getName());
 		lblPhaseNumber.setText(String.valueOf(player.getPhase().getPhaseNumber()));
 		lblPhaseDescription.setText(player.getPhase().getDescription());
+		lblPointsValue.setText(String.valueOf(player.getPoints()));
 	}
 }

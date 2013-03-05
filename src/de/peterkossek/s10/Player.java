@@ -5,6 +5,7 @@ public class Player {
 	private String	name;
 	private Phase	phase;
 	private PlayerPanel	panel;
+	private int points = 0;
 	
 	public Player(String name) {
 		this.name = name;
@@ -22,5 +23,19 @@ public class Player {
 	
 	public PlayerPanel getPanel() {
 		return panel;
+	}
+
+	public void nextPhase() {
+		phase = Phase.getNextPhase(phase);
+		panel.updatePlayerInfo();
+	}
+
+	public void addPoints(int points) {
+		this.points += points;
+		panel.updatePlayerInfo();
+	}
+	
+	public int getPoints() {
+		return points;
 	}
 }

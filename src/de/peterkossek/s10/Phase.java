@@ -1,10 +1,13 @@
 package de.peterkossek.s10;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 public class Phase {
 	
 	private String description;
 	private int number;
-	private static Phase[] phases = null;
+	private static ArrayList<Phase> phases = new ArrayList<Phase>();
 	
 	public Phase(String description, int number) {
 		this.description = description;
@@ -15,8 +18,8 @@ public class Phase {
 		return description;
 	}
 	
-	public static Phase[] getAllPhases() {
-		if (phases == null) {
+	public static ArrayList<Phase> getAllPhases() {
+		if (phases == null || phases.isEmpty()) {
 			initPhases();
 		}
 		return phases;
@@ -36,21 +39,32 @@ public class Phase {
 	}
 
 	private static void initPhases() {
-		phases = new Phase[10];
-		phases[0] = new Phase("Zwei Drillinge", 1);
-		phases[1] = new Phase("Drilling und Viererfolge", 2);
-		phases[2] = new Phase("Vierling und Viererfolge", 3);
-		phases[3] = new Phase("Siebenerfolge", 4);
-		phases[4] = new Phase("Achterfolge", 5);
-		phases[5] = new Phase("Neunerfolge", 6);
-		phases[6] = new Phase("Zwei Vierlinge", 7);
-		phases[7] = new Phase("7 Karten einer Farbe", 8);
-		phases[8] = new Phase("Fünfling und Zwilling", 9);
-		phases[9] = new Phase("Fünfling und Drilling", 10);
+		phases.add(new Phase("Zwei Drillinge", 1));
+		phases.add(new Phase("Drilling und Viererfolge", 2));
+		phases.add(new Phase("Vierling und Viererfolge", 3));
+		phases.add(new Phase("Siebenerfolge", 4));
+		phases.add(new Phase("Achterfolge", 5));
+		phases.add(new Phase("Neunerfolge", 6));
+		phases.add(new Phase("Zwei Vierlinge", 7));
+		phases.add(new Phase("7 Karten einer Farbe", 8));
+		phases.add(new Phase("Fünfling und Zwilling", 9));
+		phases.add(new Phase("Fünfling und Drilling", 10));
 	}
 
 	public static Phase getFirstPhase() {
-		return getAllPhases()[0];
+		return getAllPhases().get(0);
 	}
 	
+	public static boolean isLastPhase(Phase phase) {
+		return getAllPhases().indexOf(phase)==getAllPhases().size()-1;
+	}
+
+	public static Phase getNextPhase(Phase phase) {
+		int oldIndex = getAllPhases().indexOf(phase);
+		if (oldIndex >= getAllPhases().size())
+			return null;
+		else
+			return getAllPhases().get(oldIndex+1);
+		
+	}
 }
