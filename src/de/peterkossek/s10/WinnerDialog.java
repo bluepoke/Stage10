@@ -25,7 +25,7 @@ public class WinnerDialog extends JDialog implements ActionListener {
 			winner = finishedPlayers.get(0);
 			for (int i=1; i<finishedPlayers.size(); i++) {
 				Player nextPlayer = finishedPlayers.get(i);
-				if (nextPlayer.getPoints() > winner.getPoints())
+				if (nextPlayer.getPoints() < winner.getPoints())
 					winner = nextPlayer;
 			}
 		}
