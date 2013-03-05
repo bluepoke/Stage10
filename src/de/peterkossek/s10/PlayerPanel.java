@@ -31,9 +31,9 @@ public class PlayerPanel extends JPanel {
 		setBorder(new LineBorder(new Color(0, 0, 0)));
 		this.player = player;
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{100, 100, 0};
+		gridBagLayout.columnWidths = new int[]{90, 100, 0};
 		gridBagLayout.rowHeights = new int[]{14, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
@@ -98,6 +98,7 @@ public class PlayerPanel extends JPanel {
 		gbc_lblPointsValue.gridx = 1;
 		gbc_lblPointsValue.gridy = 3;
 		add(lblPointsValue, gbc_lblPointsValue);
+		
 	}
 	
 	public void updatePlayerInfo() {
