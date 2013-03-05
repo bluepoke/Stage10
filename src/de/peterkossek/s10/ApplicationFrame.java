@@ -1,19 +1,18 @@
 package de.peterkossek.s10;
-import java.awt.EventQueue;
-import java.awt.GridLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
-import javax.swing.JButton;
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 
 public class ApplicationFrame extends JFrame implements ActionListener {
@@ -48,9 +47,13 @@ public class ApplicationFrame extends JFrame implements ActionListener {
 	}
 
 	protected void setup() {
-		players = new Player[2];
+		players = new Player[6];
 		players[0] = new Player("P1");
 		players[1] = new Player("P2");
+		players[2] = new Player("P3");
+		players[3] = new Player("P4");
+		players[4] = new Player("P5");
+		players[5] = new Player("P6");
 		for (Player p : players)
 			pnlPlayerDisplay.add(p.getPanel());
 	}
@@ -69,7 +72,7 @@ public class ApplicationFrame extends JFrame implements ActionListener {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		pnlPlayerDisplay = new JPanel();
-		pnlPlayerDisplay.setLayout(new GridLayout(1, 0, 5, 5));
+		pnlPlayerDisplay.setLayout(new GridLayout(2, 3, 5, 5));
 		contentPane.add(pnlPlayerDisplay, BorderLayout.CENTER);
 		
 		JPanel pnlLowerButtons = new JPanel();
@@ -94,7 +97,7 @@ public class ApplicationFrame extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		if (command.equals(CMD_FINISH_ROUND)) {
-			FinishRoundDialog frd = new FinishRoundDialog(players);
+			FinishRoundDialog frd = new FinishRoundDialog(this, players);
 			RoundResult roundResult = frd.getResult();
 			ArrayList<Player> lastPhaseFinishedPlayers = new ArrayList<Player>();
 			if (roundResult != null) {
@@ -110,8 +113,7 @@ public class ApplicationFrame extends JFrame implements ActionListener {
 					player.addPoints(playerResult.getPoints());
 				}
 				if (!lastPhaseFinishedPlayers.isEmpty()) {
-					// TODO: Winner display
-//					new WinnerDialog(lastPhaseFinishedPlayers);
+					new WinnerDialog(this, lastPhaseFinishedPlayers);
 				}
 			}
 		}

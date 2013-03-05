@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
 public class ResultPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -22,6 +24,7 @@ public class ResultPanel extends JPanel implements ActionListener {
 	private JCheckBox chckbxPhaseCompleted;
 
 	public ResultPanel(Player player) {
+		setBorder(new LineBorder(new Color(0, 0, 0)));
 		this.player = player;
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};

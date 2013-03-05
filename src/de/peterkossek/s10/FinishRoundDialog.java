@@ -1,6 +1,7 @@
 package de.peterkossek.s10;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.BoxLayout;
+import java.awt.GridLayout;
 
 public class FinishRoundDialog extends JDialog implements ActionListener {
 
@@ -23,13 +25,13 @@ public class FinishRoundDialog extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog.
 	 */
-	public FinishRoundDialog(Player[] players) {
+	public FinishRoundDialog(Component parent, Player[] players) {
 		setModal(true);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+		contentPanel.setLayout(new GridLayout(2, 3, 5, 5));
 		ButtonGroup buttonGroup = new ButtonGroup();
 		resultPanels = new ResultPanel[players.length];
 		for (int i = 0; i < players.length; i++) {
@@ -56,6 +58,8 @@ public class FinishRoundDialog extends JDialog implements ActionListener {
 				buttonPane.add(cancelButton);
 			}
 		}
+		setLocationRelativeTo(parent);
+		setTitle("Durchgang beendet");
 		pack();
 	}
 
