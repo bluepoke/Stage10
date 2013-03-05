@@ -16,16 +16,19 @@ import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import java.awt.Insets;
 
 
 public class ApplicationFrame extends JFrame implements ActionListener {
 
+	private static final String CMD_RESET = "RESET";
 	private static final String CMD_SETUP_PLAYERS = "SETUP_PLAYERS";
 	private static final String INI_FILE_NAME = "Stage10.ini";
 	/**
@@ -42,6 +45,7 @@ public class ApplicationFrame extends JFrame implements ActionListener {
 	private JMenu mnFile;
 	private JMenu mnSettings;
 	private JMenuItem mntmSetupPlayers;
+	private JButton btnReset;
 
 	/**
 	 * Launch the application.
@@ -135,9 +139,9 @@ public class ApplicationFrame extends JFrame implements ActionListener {
 		JPanel pnlLowerButtons = new JPanel();
 		contentPane.add(pnlLowerButtons, BorderLayout.SOUTH);
 		GridBagLayout gbl_pnlLowerButtons = new GridBagLayout();
-		gbl_pnlLowerButtons.columnWidths = new int[]{0, 0};
+		gbl_pnlLowerButtons.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_pnlLowerButtons.rowHeights = new int[]{0, 0};
-		gbl_pnlLowerButtons.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_pnlLowerButtons.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_pnlLowerButtons.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		pnlLowerButtons.setLayout(gbl_pnlLowerButtons);
 		
@@ -145,9 +149,18 @@ public class ApplicationFrame extends JFrame implements ActionListener {
 		btnFinishRound.setActionCommand(CMD_FINISH_ROUND);
 		btnFinishRound.addActionListener(this);
 		GridBagConstraints gbc_btnFinishRound = new GridBagConstraints();
+		gbc_btnFinishRound.insets = new Insets(0, 0, 0, 5);
 		gbc_btnFinishRound.gridx = 0;
 		gbc_btnFinishRound.gridy = 0;
 		pnlLowerButtons.add(btnFinishRound, gbc_btnFinishRound);
+		
+		btnReset = new JButton("Zur\u00FCcksetzen");
+		btnReset.setActionCommand(CMD_RESET);
+		btnReset.addActionListener(this);
+		GridBagConstraints gbc_btnReset = new GridBagConstraints();
+		gbc_btnReset.gridx = 2;
+		gbc_btnReset.gridy = 0;
+		pnlLowerButtons.add(btnReset, gbc_btnReset);
 	}
 
 	@Override
@@ -181,9 +194,12 @@ public class ApplicationFrame extends JFrame implements ActionListener {
 				try {
 					storeSettings();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(this, "Fehler beim Speichern der Einstellungen:\n"+e.toString(), "Fehler beim Speichern", JOptionPane.ERROR_MESSAGE);
 				}
+			}
+		} else if (command.equals(CMD_RESET)) {
+			for (Player p : players) {
+				p.reset();
 			}
 		}
 	}

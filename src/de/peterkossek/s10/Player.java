@@ -38,4 +38,10 @@ public class Player {
 	public int getPoints() {
 		return points;
 	}
+
+	public void reset() {
+		points = 0;
+		phase = Phase.getFirstPhase();
+		panel.updatePlayerInfo();
+	}
 }
