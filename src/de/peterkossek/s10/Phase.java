@@ -1,7 +1,6 @@
 package de.peterkossek.s10;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class Phase {
 	
