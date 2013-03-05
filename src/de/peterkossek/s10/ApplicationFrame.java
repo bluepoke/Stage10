@@ -6,25 +6,42 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 
 public class ApplicationFrame extends JFrame implements ActionListener {
 
+	private static final String CMD_SETUP_PLAYERS = "SETUP_PLAYERS";
+	private static final String INI_FILE_NAME = "Stage10.ini";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final String CMD_FINISH_ROUND = "FINISH_ROUND";
+	private static final String KEY_PLAYER = "stage10.player.";
 	private JPanel contentPane;
 	private JPanel pnlPlayerDisplay;
-	private Player[] players;
+	private ArrayList<Player> players = new ArrayList<Player>();
+	private static Properties settings = new Properties();
+	private JMenuBar menuBar;
+	private JMenu mnFile;
+	private JMenu mnSettings;
+	private JMenuItem mntmSetupPlayers;
 
 	/**
 	 * Launch the application.
@@ -47,15 +64,41 @@ public class ApplicationFrame extends JFrame implements ActionListener {
 	}
 
 	protected void setup() {
-		players = new Player[6];
-		players[0] = new Player("P1");
-		players[1] = new Player("P2");
-		players[2] = new Player("P3");
-		players[3] = new Player("P4");
-		players[4] = new Player("P5");
-		players[5] = new Player("P6");
+		try {
+			loadSettings();
+		} catch (Exception e) {
+			settings.put(KEY_PLAYER+"1", "Player 1");
+			settings.put(KEY_PLAYER+"2", "Player 2");
+		}
+		for (int i=1; i<=6; i++) {
+			String playerName = settings.getProperty(KEY_PLAYER+i);
+			if (playerName != null)
+				players.add(new Player(playerName));
+		}
+		updatePlayerPanels();
+	}
+
+	private void updatePlayerPanels() {
+		pnlPlayerDisplay.removeAll();
 		for (Player p : players)
 			pnlPlayerDisplay.add(p.getPanel());
+		pnlPlayerDisplay.repaint();
+		revalidate();
+	}
+
+	private void loadSettings() throws FileNotFoundException, IOException {
+		FileInputStream fis = new FileInputStream(INI_FILE_NAME);
+		settings.load(fis);
+		fis.close();
+	}
+	
+	private void storeSettings() throws FileNotFoundException, IOException {
+		FileOutputStream fos = new FileOutputStream(INI_FILE_NAME);
+		for (int i=1; i<=players.size(); i++) {
+			settings.put(KEY_PLAYER+i, players.get(i-1).getName());
+		}
+		settings.store(fos, null);
+		fos.close();
 	}
 
 	/**
@@ -66,6 +109,20 @@ public class ApplicationFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		setLocationRelativeTo(null);
+		
+		menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		mnFile = new JMenu("Datei");
+		menuBar.add(mnFile);
+		
+		mnSettings = new JMenu("Einstellungen");
+		menuBar.add(mnSettings);
+		
+		mntmSetupPlayers = new JMenuItem("Spieler");
+		mntmSetupPlayers.setActionCommand(CMD_SETUP_PLAYERS);
+		mntmSetupPlayers.addActionListener(this);
+		mnSettings.add(mntmSetupPlayers);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -114,6 +171,18 @@ public class ApplicationFrame extends JFrame implements ActionListener {
 				}
 				if (!lastPhaseFinishedPlayers.isEmpty()) {
 					new WinnerDialog(this, lastPhaseFinishedPlayers);
+				}
+			}
+		} else if (command.equals(CMD_SETUP_PLAYERS)) {
+			ArrayList<Player> editedPlayers = new PlayerNameDialog(this, players).getPlayers();
+			if (editedPlayers != null) {
+				players = editedPlayers;
+				updatePlayerPanels();
+				try {
+					storeSettings();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
